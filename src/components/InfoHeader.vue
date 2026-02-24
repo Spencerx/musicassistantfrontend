@@ -86,7 +86,7 @@
           <v-card-title v-else>
             <MarqueeText :sync="marqueeSync">
               <div class="selectable">
-                {{ item.name }}
+                {{ headerTitle }}
               </div>
             </MarqueeText>
           </v-card-title>
