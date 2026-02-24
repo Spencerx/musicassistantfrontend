@@ -83,7 +83,6 @@ export class MusicAssistantApi {
     {},
   );
   public syncTasks = ref<SyncTask[]>([]);
-  public fetchesInProgress = ref<string[]>([]);
   public hasStreamingProviders = computed(() => {
     return Object.values(this.providers).some((p) => p.is_streaming_provider);
   });
@@ -1979,10 +1978,6 @@ export class MusicAssistantApi {
     }
 
     this.commands.delete(msg.message_id);
-    this.fetchesInProgress.value = this.fetchesInProgress.value.filter(
-      (x) => x != msg.message_id,
-    );
-
     if ("error_code" in msg) {
       resultPromise.reject(msg.details || msg.error_code);
     } else {
@@ -2426,7 +2421,6 @@ export class MusicAssistantApi {
     const cmdId = this._genCmdId();
     return new Promise((resolve, reject) => {
       this.commands.set(cmdId, { resolve, reject });
-      this.fetchesInProgress.value.push(cmdId);
       this._sendCommand(command, args, cmdId);
     });
   }

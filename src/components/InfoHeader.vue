@@ -29,7 +29,6 @@
         style="position: absolute; z-index: 999999"
         :menu-items="menuItems"
         :enforce-overflow-menu="true"
-        :show-loading="true"
         :icon-action="backButtonClick"
       />
       <v-layout
