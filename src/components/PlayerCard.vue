@@ -45,9 +45,7 @@
       <template #title>
         <!-- special builtin player (web player or companion native player) -->
         <div v-if="isBuiltinPlayer(player)" style="margin-bottom: 3px">
-          <span>{{
-            getPlayerName(player, store.deviceType == "phone" ? 10 : 16)
-          }}</span>
+          <span>{{ getPlayerName(player, 12) }}</span>
           <!-- append small icon to the title -->
           <v-chip density="compact" size="small" class="ml-2" outlined>
             <v-icon
@@ -55,9 +53,10 @@
               :icon="
                 store.deviceType == 'phone' ? 'mdi-cellphone' : 'mdi-monitor'
               "
-              style="margin-right: 6px"
             />
-            {{ $t("this_device") }}
+            <span v-if="store.deviceType != 'phone'" style="margin-left: 6px">{{
+              $t("this_device")
+            }}</span>
           </v-chip>
         </div>
         <!-- regular player -->
