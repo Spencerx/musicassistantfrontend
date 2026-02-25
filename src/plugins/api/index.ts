@@ -1935,6 +1935,9 @@ export class MusicAssistantApi {
       delete this.queues[msg.object_id!];
     } else if (msg.event == EventType.SYNC_TASKS_UPDATED) {
       this.syncTasks.value = msg.data as SyncTask[];
+    } else if (msg.event == EventType.CORE_STATE_UPDATED) {
+      // Update serverInfo with the new server state
+      this.serverInfo.value = msg.data as ServerInfoMessage;
     } else if (msg.event == EventType.PROVIDERS_UPDATED) {
       // Clear and repopulate the existing reactive object to preserve reactivity
       Object.keys(this.providers).forEach((key) => delete this.providers[key]);

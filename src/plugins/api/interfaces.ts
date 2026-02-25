@@ -292,7 +292,7 @@ export enum EventType {
   QUEUE_ITEMS_UPDATED = "queue_items_updated",
   QUEUE_TIME_UPDATED = "queue_time_updated",
   QUEUE_SETTINGS_UPDATED = "queue_settings_updated",
-  SHUTDOWN = "application_shutdown",
+  CORE_STATE_UPDATED = "core_state_updated",
   MEDIA_ITEM_ADDED = "media_item_added",
   MEDIA_ITEM_UPDATED = "media_item_updated",
   MEDIA_ITEM_DELETED = "media_item_deleted",
@@ -393,6 +393,13 @@ export enum IdentifierType {
   UNKNOWN = "unknown",
 }
 
+export enum CoreState {
+  STARTING = "starting",
+  RUNNING = "running",
+  STOPPING = "stopping",
+  STOPPED = "stopped",
+}
+
 //// api
 
 export interface CommandMessage {
@@ -438,6 +445,8 @@ export interface ServerInfoMessage {
   base_url: string;
   homeassistant_addon: boolean;
   onboard_done: boolean;
+  name?: string;
+  status?: CoreState;
 }
 
 export type MessageType =

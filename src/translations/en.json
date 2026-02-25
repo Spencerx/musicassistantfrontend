@@ -202,6 +202,11 @@
     "search": "Search",
     "series_plural": "Series",
     "series_singular": "Series",
+    "server_state": {
+        "starting": "The server is starting up, some providers, players or features may not yet be available until startup is completed.",
+        "stopping": "Server is shutting down...",
+        "stopped": "Server has stopped"
+    },
     "settings": {
         "add_new": "Add new",
         "add_provider": "Add a new provider",
