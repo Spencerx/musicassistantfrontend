@@ -1004,11 +1004,11 @@ export const getContextMenuItems = async function (
       icon: "mdi-merge",
     });
   }
-  // delete genre (admin only, single library genre)
+  // delete genre(s) (admin only, all items must be library genres)
   if (
-    items.length === 1 &&
-    items[0].media_type === MediaType.GENRE &&
-    items[0].provider === "library" &&
+    items.every(
+      (i) => i.media_type === MediaType.GENRE && i.provider === "library",
+    ) &&
     authManager.isAdmin()
   ) {
     contextMenuItems.push({
@@ -1016,8 +1016,8 @@ export const getContextMenuItems = async function (
       labelArgs: [],
       action: () => {
         eventbus.emit("deleteGenreDialog", {
-          genreId: items[0].item_id,
-          navigateBack: items[0] === parentItem,
+          genreIds: items.map((i) => i.item_id),
+          navigateBack: items.length === 1 && items[0] === parentItem,
         });
         eventbus.emit("clearSelection");
       },

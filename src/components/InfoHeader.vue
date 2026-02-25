@@ -601,7 +601,7 @@ const mergeGenre = () => {
 const deleteGenre = () => {
   if (!compProps.item) return;
   eventbus.emit("deleteGenreDialog", {
-    genreId: compProps.item.item_id,
+    genreIds: [compProps.item.item_id],
     navigateBack: true,
   });
 };

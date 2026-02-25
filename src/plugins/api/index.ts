@@ -909,6 +909,7 @@ export class MusicAssistantApi {
     order_by?: string,
     provider?: string | string[],
     genre?: number | number[],
+    has_media_mappings?: boolean,
   ): Promise<Genre[]> {
     return this.sendCommand("music/genres/library_items", {
       favorite,
@@ -918,6 +919,7 @@ export class MusicAssistantApi {
       order_by,
       provider,
       genre,
+      has_media_mappings,
     });
   }
 

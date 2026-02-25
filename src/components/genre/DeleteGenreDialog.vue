@@ -2,7 +2,11 @@
   <Dialog v-model:open="open">
     <DialogContent class="sm:max-w-[520px]">
       <DialogHeader>
-        <DialogTitle>{{ $t("delete_genre") }}</DialogTitle>
+        <DialogTitle>{{
+          genreIds.length > 1
+            ? $t("delete_genres", [genreIds.length])
+            : $t("delete_genre")
+        }}</DialogTitle>
       </DialogHeader>
       <div class="py-4">
         <p class="text-sm text-muted-foreground">
@@ -49,23 +53,32 @@ const router = useRouter();
 const open = ref(false);
 const loading = ref(false);
 const step = ref(1);
-const genreId = ref<string | null>(null);
+const genreIds = ref<string[]>([]);
 const navigateBack = ref(false);
 
 const confirmationMessage = computed(() => {
-  return step.value === 1
-    ? t("confirm_delete_genre")
-    : t("confirm_delete_genre_2");
+  if (step.value === 1) {
+    return genreIds.value.length > 1
+      ? t("confirm_delete_genres", [genreIds.value.length])
+      : t("confirm_delete_genre");
+  }
+  return t("confirm_delete_genre_2");
 });
 
 const handleConfirm = () => {
   if (step.value === 1) {
     step.value = 2;
   } else {
-    if (!genreId.value) return;
+    if (genreIds.value.length === 0) return;
     loading.value = true;
-    api.removeGenreFromLibrary(genreId.value);
-    toast.success(t("genre_deleted"));
+    for (const id of genreIds.value) {
+      api.removeGenreFromLibrary(id);
+    }
+    toast.success(
+      genreIds.value.length > 1
+        ? t("genres_deleted", [genreIds.value.length])
+        : t("genre_deleted"),
+    );
     open.value = false;
     if (navigateBack.value) {
       router.back();
@@ -75,7 +88,7 @@ const handleConfirm = () => {
 };
 
 const reset = () => {
-  genreId.value = null;
+  genreIds.value = [];
   navigateBack.value = false;
   loading.value = false;
   step.value = 1;
@@ -92,7 +105,7 @@ watch(open, (v) => {
 onMounted(() => {
   eventbus.on("deleteGenreDialog", (evt: DeleteGenreDialogEvent) => {
     reset();
-    genreId.value = evt.genreId;
+    genreIds.value = evt.genreIds;
     navigateBack.value = evt.navigateBack ?? false;
     open.value = true;
   });

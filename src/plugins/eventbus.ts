@@ -27,7 +27,7 @@ export type MergeGenreDialogEvent = {
 };
 
 export type DeleteGenreDialogEvent = {
-  genreId: string;
+  genreIds: string[];
   navigateBack?: boolean;
 };
 

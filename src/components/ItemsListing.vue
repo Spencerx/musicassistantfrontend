@@ -259,6 +259,7 @@ export interface LoadDataParams {
   favoritesOnly?: boolean;
   albumArtistsFilter?: boolean;
   libraryOnly?: boolean;
+  hasMediaMappingsFilter?: boolean;
   refresh?: boolean;
   albumType?: string[];
   provider?: string[];
@@ -283,6 +284,7 @@ export interface Props {
   title?: string;
   hideOnEmpty?: boolean;
   showLibraryOnlyFilter?: boolean;
+  showHasMediaMappingsFilter?: boolean;
   allowCollapse?: boolean;
   allowKeyHooks?: boolean;
   extraMenuItems?: ToolBarMenuItem[];
@@ -320,6 +322,7 @@ const props = withDefaults(defineProps<Props>(), {
   infiniteScroll: true,
   title: undefined,
   showLibraryOnlyFilter: false,
+  showHasMediaMappingsFilter: false,
   extraMenuItems: undefined,
   loadPagedData: undefined,
   loadItems: undefined,
@@ -461,6 +464,17 @@ const toggleAlbumArtistsFilter = function () {
     props.itemtype,
     "albumArtistsFilter",
     params.value.albumArtistsFilter,
+  );
+  loadData(undefined, undefined, true);
+};
+
+const toggleHasMediaMappingsFilter = function () {
+  params.value.hasMediaMappingsFilter = !params.value.hasMediaMappingsFilter;
+  setItemsListingPreference(
+    props.path || props.itemtype,
+    props.itemtype,
+    "hasMediaMappingsFilter",
+    params.value.hasMediaMappingsFilter,
   );
   loadData(undefined, undefined, true);
 };
@@ -798,6 +812,21 @@ const menuItems = computed(() => {
     });
   }
 
+  // has media mappings filter (hide empty genres)
+  if (props.showHasMediaMappingsFilter === true) {
+    items.push({
+      label: params.value.hasMediaMappingsFilter
+        ? "tooltip.show_empty_genres"
+        : "tooltip.hide_empty_genres",
+      icon: params.value.hasMediaMappingsFilter
+        ? "mdi-tag-check"
+        : "mdi-tag-check-outline",
+      action: toggleHasMediaMappingsFilter,
+      active: params.value.hasMediaMappingsFilter,
+      overflowAllowed: true,
+    });
+  }
+
   // album type filter
   if (props.showAlbumTypeFilter) {
     items.push({
@@ -1058,6 +1087,14 @@ const restoreSettings = async function () {
     prefs.albumArtistsFilter !== undefined
   ) {
     params.value.albumArtistsFilter = prefs.albumArtistsFilter;
+  }
+
+  // get stored/default hasMediaMappingsFilter for this itemtype (default: on)
+  if (props.showHasMediaMappingsFilter) {
+    params.value.hasMediaMappingsFilter =
+      prefs.hasMediaMappingsFilter !== undefined
+        ? prefs.hasMediaMappingsFilter
+        : true;
   }
 
   // get stored/default expand property for this itemtype
