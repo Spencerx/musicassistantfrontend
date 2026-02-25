@@ -825,6 +825,10 @@ export interface PlayerQueue {
   current_item?: QueueItem;
   next_item?: QueueItem;
   radio_source: MediaItemType[];
+  // extra_attributes: additional attributes for this player_queue to store/forward
+  // additional data that is not part of the standard model
+  // must be serializable types only
+  extra_attributes?: Record<string, any>;
 }
 
 // player

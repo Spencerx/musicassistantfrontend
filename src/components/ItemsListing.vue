@@ -94,6 +94,7 @@
               :show-track-number="showTrackNumber"
               :is-available="itemIsAvailable(item)"
               :is-playing="isPlaying(item, itemtype)"
+              :disable-play-button="isPlayActionInProgress"
               :parent-item="parentItem"
               @select="onSelect"
             />
@@ -114,6 +115,7 @@
               :show-checkboxes="showCheckboxes"
               :is-available="itemIsAvailable(item)"
               :is-playing="isPlaying(item, itemtype)"
+              :disable-play-button="isPlayActionInProgress"
               :parent-item="parentItem"
               @select="onSelect"
             />
@@ -143,6 +145,7 @@
               :is-available="itemIsAvailable(item)"
               :is-playing="isPlaying(item, itemtype)"
               :show-details="itemtype.includes('versions')"
+              :disable-play-button="isPlayActionInProgress"
               :parent-item="parentItem"
               @select="onSelect"
             />
@@ -670,6 +673,13 @@ const isLibraryItem = computed(() => {
   ];
 
   return libraryItemTypes.includes(props.itemtype);
+});
+
+const isPlayActionInProgress = computed(() => {
+  if (!store.activePlayerQueue) return false;
+  return (
+    store.activePlayerQueue.extra_attributes?.play_action_in_progress === true
+  );
 });
 
 const musicProviders = computed(() => {

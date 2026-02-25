@@ -284,7 +284,11 @@
               icon="mdi-play-circle-outline"
               :text="truncateString($t('play'), 14)"
               :disabled="!item"
-              :loading="store.playActionInProgress"
+              :loading="
+                store.activePlayerQueue &&
+                store.activePlayerQueue.extra_attributes
+                  ?.play_action_in_progress === true
+              "
               :open-menu-on-click="!store.activePlayer"
               style="margin-right: 8px; margin-bottom: 4px"
               @click="playButtonClick"
