@@ -192,7 +192,7 @@ const completeInitialization = async () => {
   if (initializationCompleted) {
     return;
   }
-  
+
   const serverInfo = api.serverInfo.value;
   if (!serverInfo) {
     console.error("[App] No server info received");
@@ -287,7 +287,7 @@ const completeInitialization = async () => {
       startingToastId = undefined;
       return;
     }
-    
+
     if (status && status !== CoreState.RUNNING) {
       const { t } = i18n.global;
       if (status === CoreState.STARTING) {
@@ -295,7 +295,9 @@ const completeInitialization = async () => {
         if (startingToastId) {
           toast.dismiss(startingToastId);
         }
-        startingToastId = toast.info(t("server_state.starting"), { duration: Infinity });
+        startingToastId = toast.info(t("server_state.starting"), {
+          duration: Infinity,
+        });
       } else if (status === CoreState.STOPPING) {
         toast.warning(t("server_state.stopping"), { duration: 5000 });
       } else if (status === CoreState.STOPPED) {
@@ -309,9 +311,12 @@ const completeInitialization = async () => {
   showServerStateToast(initialStatus);
 
   // Subscribe to core state updates to show notifications
-  api.subscribe(EventType.CORE_STATE_UPDATED, (event: { data: { status: CoreState } }) => {
-    showServerStateToast(event.data?.status);
-  });
+  api.subscribe(
+    EventType.CORE_STATE_UPDATED,
+    (event: { data: { status: CoreState } }) => {
+      showServerStateToast(event.data?.status);
+    },
+  );
 };
 
 onMounted(async () => {
@@ -347,7 +352,7 @@ onMounted(async () => {
       ) {
         // Reset initialization flag to allow re-initialization after reconnection
         initializationCompleted = false;
-        
+
         const { authManager } = await import("@/plugins/auth");
         // Check if we're in Ingress mode by examining the URL path
         const isIngressMode =
