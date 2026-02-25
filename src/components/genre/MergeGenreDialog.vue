@@ -174,7 +174,16 @@ onMounted(() => {
     reset();
     genreIds.value = evt.genreIds;
     genreNames.value = evt.genreNames;
-    allGenres.value = await api.getLibraryGenres();
+    allGenres.value = await api.getLibraryGenres(
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      false,
+    );
     open.value = true;
   });
 });
