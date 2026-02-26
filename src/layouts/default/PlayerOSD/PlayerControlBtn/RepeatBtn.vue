@@ -2,7 +2,7 @@
   <!-- repeat button -->
   <Icon
     v-if="isVisible && playerQueue"
-    v-bind="icon"
+    v-bind="{ ...icon, ...$attrs }"
     :disabled="!playerQueue.active || playerQueue.items == 0 || isLoading"
     :color="
       getValueFromSources(icon?.color, [
@@ -34,6 +34,7 @@
 </template>
 
 <script setup lang="ts">
+defineOptions({ inheritAttrs: false });
 import Icon, { IconProps } from "@/components/Icon.vue";
 import { getValueFromSources } from "@/helpers/utils";
 import api from "@/plugins/api";

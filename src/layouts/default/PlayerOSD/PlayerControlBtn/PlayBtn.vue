@@ -2,7 +2,7 @@
   <!-- play/pause button: disabled if no content -->
   <Icon
     v-if="isVisible && player"
-    v-bind="icon"
+    v-bind="{ ...icon, ...$attrs }"
     class="play-btn-icon"
     :disabled="!canPlayPause || isLoading"
     :icon="iconStyle ? `${baseIcon}-${iconStyle}` : baseIcon"
@@ -19,6 +19,7 @@
 </template>
 
 <script setup lang="ts">
+defineOptions({ inheritAttrs: false });
 import Icon, { IconProps } from "@/components/Icon.vue";
 import api from "@/plugins/api";
 import { PlaybackState, Player, PlayerQueue } from "@/plugins/api/interfaces";
@@ -77,7 +78,7 @@ const baseIcon = computed(() => {
 const isLoading = computed(() => {
   if (!compProps.player) return false;
   return (
-    compProps.playerQueue?.extra_attributes?.play_action_in_progress === true
+    compProps.playerQueue?.extra_data?.play_action_in_progress === true
   );
 });
 </script>
