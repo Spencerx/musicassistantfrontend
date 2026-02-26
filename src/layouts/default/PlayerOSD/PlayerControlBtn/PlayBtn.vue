@@ -13,7 +13,7 @@
     v-if="isVisible && player && isLoading"
     class="play-btn-spinner"
     indeterminate
-    :size="46"
+    :size="compProps.spinnerSize"
     :width="2"
   />
 </template>
@@ -33,6 +33,7 @@ export interface Props {
   withCircle?: boolean;
   icon?: IconProps;
   iconStyle?: string;
+  spinnerSize?: number;
 }
 const compProps = withDefaults(defineProps<Props>(), {
   playerQueue: undefined,
@@ -40,6 +41,7 @@ const compProps = withDefaults(defineProps<Props>(), {
   withCircle: true,
   icon: undefined,
   iconStyle: "circle",
+  spinnerSize: 46,
 });
 
 const { activeSource } = useActiveSource(toRef(compProps, "player"));
